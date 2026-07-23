@@ -156,27 +156,27 @@ a {
 
 .row {
 	min-width: 0;
-	padding: clamp(2.5rem, 6vw, 5rem) 1.5rem;
 	text-align: center;
 }
 
-/* The proof is transparent — its band supplies the colour — centred, and it
-   inherits its text colour from the band (set inline per row in FontScroll). */
+/* Each Glyphrow fills its band edge-to-edge (no max-width/margins) so its
+   control bar spans the full width and sits at the bottom of the row. The band
+   colour comes from the .row (inline per row); the proof is transparent and
+   inherits the text colour. */
 .rows .row__proof {
-	max-width: 72rem;
-	margin: 0 auto;
 	--glyphrow-bg: transparent;
 	--glyphrow-fg: inherit;
 	--glyphrow-accent: currentColor;
-	--glyphrow-bar-bg: rgba(0, 0, 0, 0.75);
-	--glyphrow-bar-track: rgba(255, 255, 255, 0.22);
+	--glyphrow-bar-bg: rgba(0, 0, 0, 0.78);
+	--glyphrow-bar-track: rgba(255, 255, 255, 0.2);
 	--glyphrow-bar-fill: #ffffff;
+	--glyphrow-bar-radius: 0;
 }
 
-/* No outline/border when a text block is clicked into for editing. */
-.rows .row__proof .glyphrow__text:focus,
-.rows .row__proof .glyphrow__text:focus-visible {
-	outline: none;
+/* Spacing lives inside the Glyphrow (on the stage) so the type breathes while
+   the control bar still spans the full band. */
+.rows .row__proof .glyphrow__stage {
+	padding: clamp(2.75rem, 6vw, 5.5rem) 1.5rem;
 }
 
 .sentinel {

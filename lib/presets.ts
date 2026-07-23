@@ -32,7 +32,7 @@ export const PRESETS: Preset[] = [
 	{
 		label: "Display · ligatures",
 		samples: ["Handgloves", "Fjord bank", "Waltz nymph", "Quixotic"],
-		opts: { size: 88, wrap: false, controls: { size: true, features: true }, features: f("liga", "dlig") },
+		opts: { size: 88, weight: 700, wrap: false, controls: { size: true, weight: true, features: true }, features: f("liga", "dlig") },
 	},
 	{
 		label: "Reading",
@@ -48,17 +48,17 @@ export const PRESETS: Preset[] = [
 		label: "Italic",
 		samples: ["Bold, light & italic", "Emphasis, gracefully", "In her own words", "A slanted remark"],
 		italic: true,
-		opts: { size: 54, italic: true, wrap: false, controls: { weight: true, italic: true, features: true } },
+		opts: { size: 54, weight: 300, italic: true, wrap: false, controls: { weight: true, italic: true, features: true } },
 	},
 	{
 		label: "Auto-fit headline",
 		samples: ["Typographic voice", "Set in stone", "Reads beautifully", "Character & tone"],
-		opts: { size: "fit", controls: { features: true } },
+		opts: { size: "fit", weight: 800, controls: { weight: true, features: true } },
 	},
 	{
 		label: "All caps · tracked",
 		samples: ["TYPE SPECIMEN", "DISPLAY CAPS", "SET IN CAPITALS", "GRAND OPENING"],
-		opts: { size: 46, tracking: 0.12, wrap: false, controls: { size: true, tracking: true, features: true } },
+		opts: { size: 46, weight: 500, tracking: 0.12, wrap: false, controls: { size: true, weight: true, tracking: true, features: true } },
 	},
 	{
 		label: "Numerals",
@@ -74,7 +74,7 @@ export const PRESETS: Preset[] = [
 			"Letters were once cut by hand in metal",
 		],
 		italic: true,
-		opts: { size: 32, italic: true, controls: { size: true } },
+		opts: { size: 32, weight: 300, italic: true, controls: { size: true, weight: true } },
 	},
 	// Colour fonts — the font paints itself in colour; single row on a neutral band.
 	{
@@ -103,6 +103,6 @@ export const PRESETS: Preset[] = [
 		label: "Small caps",
 		font: "Cormorant",
 		samples: ["Small Capitals", "Fine Details", "Quiet Luxury", "Set in Caps"],
-		opts: { size: 52, wrap: false, controls: { features: true }, features: f("smcp") },
+		opts: { size: 52, weight: 500, wrap: false, controls: { weight: true, features: true }, features: f("smcp") },
 	},
 ];

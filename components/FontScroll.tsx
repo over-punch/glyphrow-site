@@ -32,9 +32,13 @@ function FontRow({ family, index }: { family: string; index: number }) {
 
 	useEffect(() => {
 		loadGoogleFont(font, preset.load);
+		// Load the weight range so variable fonts render real weights (the range
+		// request is a no-op for non-variable fonts; the plain load above covers
+		// them). Colour fonts have their own fixed weight.
+		if (!preset.colorFont) loadGoogleFont(font, "wght@100..900");
 		// Italic rows load the real italic face so it isn't a synthesised slant.
 		if (preset.italic) loadGoogleFont(font, "ital@1");
-	}, [font, preset.load, preset.italic]);
+	}, [font, preset.load, preset.italic, preset.colorFont]);
 
 	return (
 		<article className="row" title={font} style={style}>

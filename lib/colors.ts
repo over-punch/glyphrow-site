@@ -1,10 +1,10 @@
-// Per-row background colours for the demo. Hues advance in smooth analogous
-// steps at a fixed saturation and lightness, so bands stacked beside each other
-// flow through the spectrum and read as one cohesive palette rather than a
-// random jumble. Foreground is a near-black that stays legible on every hue at
-// this lightness.
+// Per-row background colours for the demo. Hues advance by the golden angle so
+// every neighbouring band is a distinctly different hue, yet — because the
+// saturation and lightness are fixed — they all share one tone and read as a
+// cohesive, evenly-distributed palette. Foreground is a near-black that stays
+// legible on every hue at this lightness.
 
-const HUE_STEP = 34; // degrees per row — analogous neighbours, ~11 rows per loop
+const HUE_STEP = 137.508; // golden angle — maximally-distinct, evenly-spread hues
 const SAT = 72; // %
 const LIGHT = 72; // % — light enough that near-black text has strong contrast
 
