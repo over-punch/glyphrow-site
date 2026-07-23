@@ -4,11 +4,11 @@
 // spreads them evenly across that arc so neighbours are distinct. High
 // lightness with generous saturation gives a soft, crayon-like, childlike feel.
 
-const WARM_START = 335; // rose / magenta-red
-const WARM_SPAN = 170; // ...through red, coral, orange, yellow to warm green (~145°)
+const WARM_START = 342; // rose / watermelon
+const WARM_SPAN = 120; // ...through red, coral, tangerine, yellow to lime (~100°); no cool greens
 const GOLDEN_RATIO = 0.6180339887; // even, non-repeating spread across the arc
-const SAT = 82; // %
-const LIGHT = 75; // % — soft and bright; near-black text stays legible
+const SAT = 90; // % — vivid, crayon-saturated
+const LIGHT = 70; // % — bright but still lets near-black text stay legible
 
 /** Background + foreground for the row at `index`. */
 export function rowColor(index: number): { bg: string; fg: string } {

@@ -174,9 +174,19 @@ a {
 }
 
 /* Spacing lives inside the Glyphrow (on the stage) so the type breathes while
-   the control bar still spans the full band. */
+   the control bar still spans the full band. Horizontal padding holds the type
+   to ~90% of the width (5% gutters); auto-fit sizes to that inner width. */
 .rows .row__proof .glyphrow__stage {
-	padding: clamp(2.75rem, 6vw, 5.5rem) 1.5rem;
+	padding: clamp(2.75rem, 6vw, 5.5rem) max(1.5rem, 5vw);
+}
+
+/* The features dropdown must stay a solid, readable panel even though the proof
+   background is transparent (otherwise it's dark-on-dark over a colour band). */
+.rows .row__proof .glyphrow__panel {
+	background: #191410;
+	color: #f4f1ea;
+	border-color: rgba(255, 255, 255, 0.14);
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
 }
 
 .sentinel {
