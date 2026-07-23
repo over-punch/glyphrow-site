@@ -13,20 +13,20 @@ import { loadGoogleFont } from "@/lib/googleFont";
 /** How many rows to append each time the sentinel is reached. */
 const BATCH = 8;
 
-/** One font row: its Google Font is loaded on mount, then tested with a preset. */
+/** One font row: its Google Font is loaded on mount, then tested with a preset.
+ * No visible caption — the family name is on the row's title (hover) for
+ * reference, keeping the scroll a clean wall of type. */
 function FontRow({ family, index }: { family: string; index: number }) {
 	const preset = PRESETS[index % PRESETS.length];
 
 	useEffect(() => {
 		loadGoogleFont(family);
-	}, [family]);
+		// Italic rows load the real italic face so it isn't a synthesised slant.
+		if (preset.italic) loadGoogleFont(family, "ital@1");
+	}, [family, preset.italic]);
 
 	return (
-		<article className="row">
-			<header className="row__meta">
-				<span className="row__family">{family}</span>
-				<span className="row__preset">{preset.label}</span>
-			</header>
+		<article className="row" title={family}>
 			<Glyphrow
 				fontFamily={family}
 				fallback="sans-serif"
