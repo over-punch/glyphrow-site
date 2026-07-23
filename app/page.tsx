@@ -47,15 +47,12 @@ export default function Home() {
 				</nav>
 			</section>
 
-			<section className="showcase" aria-labelledby="showcase-title">
-				<div className="showcase__head">
-					<h2 id="showcase-title">Every Google Font, live</h2>
-					<p>
-						Each row is a real Glyphrow instance testing a Google Font, cycling through
-						different settings — sizes, features, alignment, weights, auto-fit. Focus any
-						row to reveal its controls. Keep scrolling: the list loops forever.
-					</p>
-				</div>
+			<section className="showcase" aria-label="Live demo">
+				<p className="showcase__note">
+					A live demo of what you can build. Every band below is a real, editable
+					Glyphrow — Google Fonts, colour fonts, OpenType features, variable axes,
+					auto-fit. Click into any one and drag its controls.
+				</p>
 				<FontScroll />
 			</section>
 

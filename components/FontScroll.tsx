@@ -5,35 +5,44 @@
 // into view; the family/preset lists loop, so the scroll never ends.
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { Glyphrow } from "glyphrow/react";
 import { FAMILIES } from "@/lib/families";
 import { PRESETS } from "@/lib/presets";
 import { loadGoogleFont } from "@/lib/googleFont";
+import { rowColor, NEUTRAL } from "@/lib/colors";
 
 /** How many rows to append each time the sentinel is reached. */
 const BATCH = 8;
 
-/** One font row: its Google Font is loaded on mount, then tested with a preset.
- * No visible caption — the family name is on the row's title (hover) for
- * reference, keeping the scroll a clean wall of type. */
+/** One font row: a coloured band with a centred, live Glyphrow tester. Most
+ * rows use the cycled Google Font family; some presets pin a specific font
+ * (colour fonts, feature demos). The family name is on the row's title. */
 function FontRow({ family, index }: { family: string; index: number }) {
 	const preset = PRESETS[index % PRESETS.length];
 	// Rotate the preset's sample pool on each full loop through the presets.
 	const cycle = Math.floor(index / PRESETS.length);
 	const sample = preset.samples[cycle % preset.samples.length];
+	// Pinned font (colour fonts / feature demos) or the cycled family.
+	const font = preset.font ?? family;
+	// Colour fonts paint themselves, so they sit on a neutral band.
+	const { bg, fg } = preset.colorFont ? NEUTRAL : rowColor(index);
+	// Inline band colour + the text colour the proof inherits (see globals.css).
+	const style = { background: bg, "--glyphrow-fg": fg } as CSSProperties;
 
 	useEffect(() => {
-		loadGoogleFont(family);
+		loadGoogleFont(font, preset.load);
 		// Italic rows load the real italic face so it isn't a synthesised slant.
-		if (preset.italic) loadGoogleFont(family, "ital@1");
-	}, [family, preset.italic]);
+		if (preset.italic) loadGoogleFont(font, "ital@1");
+	}, [font, preset.load, preset.italic]);
 
 	return (
-		<article className="row" title={family}>
+		<article className="row" title={font} style={style}>
 			<Glyphrow
-				fontFamily={family}
+				fontFamily={font}
 				fallback="sans-serif"
 				text={sample}
+				align="center"
 				className="row__proof"
 				{...preset.opts}
 			/>

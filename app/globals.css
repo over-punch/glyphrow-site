@@ -131,65 +131,53 @@ a {
 	font-weight: 600;
 }
 
-/* ---- Showcase ------------------------------------------------------------- */
+/* ---- Showcase (live demo) ------------------------------------------------- */
 
 .showcase {
-	max-width: var(--maxw);
+	padding: 0;
+}
+
+.showcase__note {
+	max-width: 46rem;
 	margin: 0 auto;
-	padding: 2rem 1.5rem 4rem;
-	border-top: 1px solid var(--line);
+	padding: 1rem 1.5rem 2.5rem;
+	text-align: center;
+	color: #9a9a9a;
+	font-size: 15px;
+	line-height: 1.5;
 }
 
-.showcase__head {
-	max-width: 40rem;
-	margin: 1.5rem 0 2rem;
-}
-
-.showcase__head h2 {
-	margin: 0 0 0.5rem;
-	font-size: clamp(1.4rem, 3.5vw, 2rem);
-	letter-spacing: -0.01em;
-	color: #fff;
-}
-
-.showcase__head p {
-	margin: 0;
-	color: #b8b8b8;
-}
-
-/* The scroll: a clean wall of type — no captions, no dividers. */
+/* The demo is a stack of full-bleed colour bands, each a centred Glyphrow. */
 .rows {
 	display: flex;
 	flex-direction: column;
-	gap: clamp(2rem, 5vw, 3.5rem);
+	gap: 0;
 }
 
 .row {
 	min-width: 0;
+	padding: clamp(2.5rem, 6vw, 5rem) 1.5rem;
+	text-align: center;
 }
 
-/* Each proof is a transparent Glyphrow so the type sits straight on black.
-   Control bar (revealed on focus) is themed dark. Text colour is set per row
-   by the cycling rules below. */
+/* The proof is transparent — its band supplies the colour — centred, and it
+   inherits its text colour from the band (set inline per row in FontScroll). */
 .rows .row__proof {
+	max-width: 72rem;
+	margin: 0 auto;
 	--glyphrow-bg: transparent;
-	--glyphrow-fg: #fff;
+	--glyphrow-fg: inherit;
 	--glyphrow-accent: currentColor;
-	--glyphrow-bar-bg: #141414;
-	--glyphrow-bar-track: #2a2a2a;
-	--glyphrow-bar-fill: #f0f0f0;
+	--glyphrow-bar-bg: rgba(0, 0, 0, 0.75);
+	--glyphrow-bar-track: rgba(255, 255, 255, 0.22);
+	--glyphrow-bar-fill: #ffffff;
 }
 
-/* White and a variety of pleasant saturated colours, cycling down the scroll. */
-.rows .row:nth-child(9n + 1) .row__proof { --glyphrow-fg: #ffffff; }
-.rows .row:nth-child(9n + 2) .row__proof { --glyphrow-fg: #ff6b9d; }
-.rows .row:nth-child(9n + 3) .row__proof { --glyphrow-fg: #22d3ee; }
-.rows .row:nth-child(9n + 4) .row__proof { --glyphrow-fg: #fbbf24; }
-.rows .row:nth-child(9n + 5) .row__proof { --glyphrow-fg: #a78bfa; }
-.rows .row:nth-child(9n + 6) .row__proof { --glyphrow-fg: #a3e635; }
-.rows .row:nth-child(9n + 7) .row__proof { --glyphrow-fg: #fb923c; }
-.rows .row:nth-child(9n + 8) .row__proof { --glyphrow-fg: #ffffff; }
-.rows .row:nth-child(9n + 9) .row__proof { --glyphrow-fg: #34d399; }
+/* No outline/border when a text block is clicked into for editing. */
+.rows .row__proof .glyphrow__text:focus,
+.rows .row__proof .glyphrow__text:focus-visible {
+	outline: none;
+}
 
 .sentinel {
 	padding: 3rem 0;
