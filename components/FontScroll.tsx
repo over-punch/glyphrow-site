@@ -18,6 +18,9 @@ const BATCH = 8;
  * reference, keeping the scroll a clean wall of type. */
 function FontRow({ family, index }: { family: string; index: number }) {
 	const preset = PRESETS[index % PRESETS.length];
+	// Rotate the preset's sample pool on each full loop through the presets.
+	const cycle = Math.floor(index / PRESETS.length);
+	const sample = preset.samples[cycle % preset.samples.length];
 
 	useEffect(() => {
 		loadGoogleFont(family);
@@ -30,7 +33,7 @@ function FontRow({ family, index }: { family: string; index: number }) {
 			<Glyphrow
 				fontFamily={family}
 				fallback="sans-serif"
-				text={preset.sample}
+				text={sample}
 				className="row__proof"
 				{...preset.opts}
 			/>
