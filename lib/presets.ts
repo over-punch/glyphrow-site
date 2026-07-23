@@ -3,8 +3,12 @@
 // loop. Some presets pin a specific font (colour fonts, feature showcases);
 // the rest use the cycled Google Font family.
 //
-// Tracking is only applied to the all-caps instance. Colour fonts and feature
-// demos are single-row.
+// Single-line rows use size:"fit" — Glyphrow's auto-fit finds the largest size
+// that fits the band, so a word never overflows a narrow screen. The size
+// control's range caps how large fit may grow (giving scale variety) and, in
+// fit mode, the size slider is hidden (sizing is automatic). Tracking is only
+// applied to the all-caps row. Colour fonts are ordered so two never sit
+// adjacent in the scroll.
 
 import type { GlyphrowProps, FeatureTag } from "glyphrow/react";
 
@@ -32,7 +36,13 @@ export const PRESETS: Preset[] = [
 	{
 		label: "Display · ligatures",
 		samples: ["Handgloves", "Fjord bank", "Waltz nymph", "Quixotic"],
-		opts: { size: 88, weight: 700, wrap: false, controls: { size: true, weight: true, features: true }, features: f("liga", "dlig") },
+		opts: {
+			size: "fit",
+			weight: 700,
+			wrap: false,
+			controls: { size: { min: 20, max: 300 }, weight: true, features: true },
+			features: f("liga", "dlig"),
+		},
 	},
 	{
 		label: "Reading",
@@ -45,25 +55,58 @@ export const PRESETS: Preset[] = [
 		opts: { size: 30, wrap: true, controls: { size: true, weight: true, features: true } },
 	},
 	{
+		label: "Colour font · Nabla",
+		font: "Nabla",
+		colorFont: true,
+		samples: ["Chroma", "Spectrum", "Vivid", "Prism"],
+		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 280 } } },
+	},
+	{
 		label: "Italic",
 		samples: ["Bold, light & italic", "Emphasis, gracefully", "In her own words", "A slanted remark"],
 		italic: true,
-		opts: { size: 54, weight: 300, italic: true, wrap: false, controls: { weight: true, italic: true, features: true } },
+		opts: {
+			size: "fit",
+			weight: 300,
+			italic: true,
+			wrap: false,
+			controls: { size: { min: 16, max: 110 }, weight: true, italic: true, features: true },
+		},
 	},
 	{
 		label: "Auto-fit headline",
 		samples: ["Typographic voice", "Set in stone", "Reads beautifully", "Character & tone"],
-		opts: { size: "fit", weight: 800, controls: { weight: true, features: true } },
+		opts: { size: "fit", weight: 800, wrap: false, controls: { size: { min: 20, max: 300 }, weight: true, features: true } },
+	},
+	{
+		label: "Colour font · Bungee Spice",
+		font: "Bungee Spice",
+		colorFont: true,
+		samples: ["SPICE", "HEAT", "ZEST", "BOLD"],
+		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 240 } } },
 	},
 	{
 		label: "All caps · tracked",
 		samples: ["TYPE SPECIMEN", "DISPLAY CAPS", "SET IN CAPITALS", "GRAND OPENING"],
-		opts: { size: 46, weight: 500, tracking: 0.12, wrap: false, controls: { size: true, weight: true, tracking: true, features: true } },
+		opts: {
+			size: "fit",
+			weight: 500,
+			tracking: 0.12,
+			wrap: false,
+			controls: { size: { min: 16, max: 92 }, weight: true, tracking: true, features: true },
+		},
 	},
 	{
 		label: "Numerals",
 		samples: ["0123456789 · $1,234.56", "1/2 3/4 · No. 42 · 3.14159", "24/7 · +1 (555) 0192", "€9.99 · 100% · #7"],
-		opts: { size: 42, wrap: false, controls: { features: true }, features: f("tnum") },
+		opts: { size: "fit", wrap: false, controls: { size: { min: 16, max: 84 }, features: true }, features: f("tnum") },
+	},
+	{
+		label: "Colour font · Honk",
+		font: "Honk",
+		colorFont: true,
+		samples: ["Honk", "Beep", "Zoom", "Loud"],
+		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 280 } } },
 	},
 	{
 		label: "Italic quote",
@@ -76,33 +119,16 @@ export const PRESETS: Preset[] = [
 		italic: true,
 		opts: { size: 32, weight: 300, italic: true, controls: { size: true, weight: true } },
 	},
-	// Colour fonts — the font paints itself in colour; single row on a neutral band.
-	{
-		label: "Colour font · Nabla",
-		font: "Nabla",
-		colorFont: true,
-		samples: ["Chroma", "Spectrum", "Vivid", "Prism"],
-		opts: { size: 84, wrap: false, controls: { size: true } },
-	},
-	{
-		label: "Colour font · Bungee Spice",
-		font: "Bungee Spice",
-		colorFont: true,
-		samples: ["SPICE", "HEAT", "ZEST", "BOLD"],
-		opts: { size: 76, wrap: false, controls: { size: true } },
-	},
-	{
-		label: "Colour font · Honk",
-		font: "Honk",
-		colorFont: true,
-		samples: ["Honk", "Beep", "Zoom", "Loud"],
-		opts: { size: 84, wrap: false, controls: { size: true } },
-	},
-	// Interesting features — small caps.
 	{
 		label: "Small caps",
 		font: "Cormorant",
 		samples: ["Small Capitals", "Fine Details", "Quiet Luxury", "Set in Caps"],
-		opts: { size: 52, weight: 500, wrap: false, controls: { weight: true, features: true }, features: f("smcp") },
+		opts: {
+			size: "fit",
+			weight: 500,
+			wrap: false,
+			controls: { size: { min: 16, max: 110 }, weight: true, features: true },
+			features: f("smcp"),
+		},
 	},
 ];
