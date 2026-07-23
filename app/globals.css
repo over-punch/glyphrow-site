@@ -63,7 +63,7 @@ a {
 	padding: clamp(0.5rem, 3vw, 1.5rem) 0;
 }
 
-.hero__proof {
+.hero .hero__proof {
 	min-height: 3.5rem;
 	--glyphrow-bg: transparent;
 	--glyphrow-fg: #fff;
@@ -171,7 +171,7 @@ a {
 /* Each proof is a transparent Glyphrow so the type sits straight on black.
    Control bar (revealed on focus) is themed dark. Text colour is set per row
    by the cycling rules below. */
-.row__proof {
+.rows .row__proof {
 	--glyphrow-bg: transparent;
 	--glyphrow-fg: #fff;
 	--glyphrow-accent: currentColor;
