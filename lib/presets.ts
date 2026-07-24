@@ -31,7 +31,9 @@ export interface Preset {
 	colorFont?: boolean;
 }
 
-const f = (...tags: string[]) => tags as FeatureTag[];
+// Typed against glyphrow's FeatureTag union, so invalid tags fail to compile
+// (no cast — the tags are validated at each call site).
+const f = (...tags: FeatureTag[]): FeatureTag[] => tags;
 
 export const PRESETS: Preset[] = [
 	{

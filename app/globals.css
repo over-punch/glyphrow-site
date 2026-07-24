@@ -195,6 +195,25 @@ a {
 	color: #555;
 }
 
+/* Shown instead of the auto-loading sentinel under prefers-reduced-motion. */
+.load-more {
+	display: block;
+	margin: 3rem auto;
+	padding: 0.8rem 1.6rem;
+	background: transparent;
+	color: var(--ink);
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	font: 600 13px/1 system-ui, sans-serif;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.load-more:hover {
+	border-color: var(--muted);
+}
+
 /* ---- Footer --------------------------------------------------------------- */
 
 .foot {

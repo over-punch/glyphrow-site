@@ -60,12 +60,25 @@ function FontRow({ family, index }: { family: string; index: number }) {
 /** The scrolling list. Grows as the user reaches the bottom. */
 export default function FontScroll() {
 	const [count, setCount] = useState(BATCH);
+	const [reducedMotion, setReducedMotion] = useState(false);
 	const sentinelRef = useRef<HTMLDivElement>(null);
 	// Prevents a burst of batches within a single frame if the sentinel stays
 	// intersecting after an append (short rows / tall viewport).
 	const loadingRef = useRef(false);
 
+	// Respect prefers-reduced-motion: swap the endless auto-append (content
+	// shifting under the user on scroll) for an explicit "Load more" button,
+	// which also makes the footer reachable.
 	useEffect(() => {
+		const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+		const update = () => setReducedMotion(mq.matches);
+		update();
+		mq.addEventListener("change", update);
+		return () => mq.removeEventListener("change", update);
+	}, []);
+
+	useEffect(() => {
+		if (reducedMotion) return; // no auto-append under reduced motion
 		const node = sentinelRef.current;
 		if (!node) return;
 		const io = new IntersectionObserver(
@@ -83,7 +96,7 @@ export default function FontScroll() {
 		);
 		io.observe(node);
 		return () => io.disconnect();
-	}, []);
+	}, [reducedMotion]);
 
 	const rows = [];
 	for (let i = 0; i < count; i++) {
@@ -93,9 +106,15 @@ export default function FontScroll() {
 	return (
 		<>
 			<div className="rows">{rows}</div>
-			<div ref={sentinelRef} className="sentinel" aria-hidden="true">
-				loading more fonts…
-			</div>
+			{reducedMotion ? (
+				<button type="button" className="load-more" onClick={() => setCount((c) => c + BATCH)}>
+					Load more fonts
+				</button>
+			) : (
+				<div ref={sentinelRef} className="sentinel" aria-hidden="true">
+					loading more fonts…
+				</div>
+			)}
 		</>
 	);
 }
