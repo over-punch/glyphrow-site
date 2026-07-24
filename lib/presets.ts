@@ -59,7 +59,7 @@ export const PRESETS: Preset[] = [
 		font: "Nabla",
 		colorFont: true,
 		samples: ["Chroma", "Spectrum", "Vivid", "Prism"],
-		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 280 } } },
+		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 280 }, tracking: true } },
 	},
 	{
 		label: "Italic",
@@ -83,7 +83,7 @@ export const PRESETS: Preset[] = [
 		font: "Bungee Spice",
 		colorFont: true,
 		samples: ["SPICE", "HEAT", "ZEST", "BOLD"],
-		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 240 } } },
+		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 240 }, tracking: true } },
 	},
 	{
 		label: "All caps · tracked",
@@ -106,7 +106,7 @@ export const PRESETS: Preset[] = [
 		font: "Honk",
 		colorFont: true,
 		samples: ["Honk", "Beep", "Zoom", "Loud"],
-		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 280 } } },
+		opts: { size: "fit", wrap: false, controls: { size: { min: 20, max: 280 }, tracking: true } },
 	},
 	{
 		label: "Italic quote",
