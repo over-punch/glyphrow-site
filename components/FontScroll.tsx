@@ -28,7 +28,10 @@ function FontRow({ family, index }: { family: string; index: number }) {
 	// Colour fonts paint themselves, so they sit on a neutral band.
 	const { bg, fg } = preset.colorFont ? NEUTRAL : rowColor(index);
 	// Inline band colour + the text colour the proof inherits (see globals.css).
-	const style = { background: bg, "--glyphrow-fg": fg } as CSSProperties;
+	// Setting `color` too means currentColor (which the proof's --glyphrow-accent
+	// resolves to) is the band ink, not the light body ink — so focus rings stay
+	// visible on bright bands, and any inherited-colour fallback text is legible.
+	const style = { background: bg, color: fg, "--glyphrow-fg": fg } as CSSProperties;
 
 	useEffect(() => {
 		loadGoogleFont(font, preset.load);

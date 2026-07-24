@@ -10,6 +10,9 @@ import { loadGoogleFont } from "@/lib/googleFont";
 
 export default function Hero() {
 	useEffect(() => {
+		// Plain load first, as a fallback so the hero still shows Fraunces if the
+		// multi-axis request is ever rejected (rather than falling back to Georgia).
+		loadGoogleFont("Fraunces");
 		// css2 axis order: registered (opsz, wght) then custom (SOFT, WONK).
 		loadGoogleFont("Fraunces", "opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1");
 	}, []);

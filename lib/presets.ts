@@ -122,7 +122,7 @@ export const PRESETS: Preset[] = [
 	},
 	{
 		label: "Small caps",
-		font: "Cormorant",
+		font: "Cormorant SC",
 		samples: ["Small Capitals", "Fine Details", "Quiet Luxury", "Set in Caps"],
 		opts: {
 			size: "fit",
