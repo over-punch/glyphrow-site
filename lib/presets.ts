@@ -6,9 +6,10 @@
 // Single-line rows use size:"fit" — Glyphrow's auto-fit finds the largest size
 // that fits the band, so a word never overflows a narrow screen. The size
 // control's range caps how large fit may grow (giving scale variety) and, in
-// fit mode, the size slider is hidden (sizing is automatic). Tracking is only
-// applied to the all-caps row. Colour fonts are ordered so two never sit
-// adjacent in the scroll.
+// fit mode, the size slider is hidden (sizing is automatic). Only the all-caps
+// row presets a tracking *value*; colour-font rows also expose a tracking
+// control (their size control is hidden in fit mode). Colour fonts are ordered
+// so two never sit adjacent in the scroll.
 
 import type { GlyphrowProps, FeatureTag } from "glyphrow/react";
 
