@@ -61,13 +61,22 @@ function FontRow({ family, index }: { family: string; index: number }) {
 export default function FontScroll() {
 	const [count, setCount] = useState(BATCH);
 	const sentinelRef = useRef<HTMLDivElement>(null);
+	// Prevents a burst of batches within a single frame if the sentinel stays
+	// intersecting after an append (short rows / tall viewport).
+	const loadingRef = useRef(false);
 
 	useEffect(() => {
 		const node = sentinelRef.current;
 		if (!node) return;
 		const io = new IntersectionObserver(
 			(entries) => {
-				if (entries[0]?.isIntersecting) setCount((c) => c + BATCH);
+				if (entries[0]?.isIntersecting && !loadingRef.current) {
+					loadingRef.current = true;
+					setCount((c) => c + BATCH);
+					requestAnimationFrame(() => {
+						loadingRef.current = false;
+					});
+				}
 			},
 			// Preload well before the sentinel is visible so scrolling stays smooth.
 			{ rootMargin: "800px 0px" },
