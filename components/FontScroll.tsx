@@ -7,13 +7,17 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { Glyphrow } from "glyphrow/react";
-import { FAMILIES } from "@/lib/families";
+import { FAMILIES, VARIABLE_FAMILIES, ITALIC_FAMILIES } from "@/lib/families";
 import { PRESETS } from "@/lib/presets";
 import { loadGoogleFont } from "@/lib/googleFont";
 import { rowColor, NEUTRAL } from "@/lib/colors";
 
 /** How many rows to append each time the sentinel is reached. */
 const BATCH = 8;
+
+/** Auto-append stops after this many rows; a "Load more" button then continues.
+ * Bounds how many live Glyphrow instances / observers accumulate from scrolling. */
+const CAP = 160;
 
 /** One font row: a coloured band with a centred, live Glyphrow tester. Most
  * rows use the cycled Google Font family; some presets pin a specific font
@@ -35,12 +39,15 @@ function FontRow({ family, index }: { family: string; index: number }) {
 
 	useEffect(() => {
 		loadGoogleFont(font, preset.load);
-		// Load the weight range so variable fonts render real weights (the range
-		// request is a no-op for non-variable fonts; the plain load above covers
-		// them). Colour fonts have their own fixed weight.
-		if (!preset.colorFont) loadGoogleFont(font, "wght@100..900");
-		// Italic rows load the real italic face so it isn't a synthesised slant.
-		if (preset.italic) loadGoogleFont(font, "ital@1");
+		// Only request the weight range for fonts with a variable wght axis — a
+		// range request 400s on static fonts. Colour fonts have a fixed weight.
+		if (!preset.colorFont && VARIABLE_FAMILIES.has(font)) {
+			loadGoogleFont(font, "wght@100..900");
+		}
+		// Load a real italic face only for families that actually ship one.
+		if (preset.italic && ITALIC_FAMILIES.has(font)) {
+			loadGoogleFont(font, "ital@1");
+		}
 	}, [font, preset.load, preset.italic, preset.colorFont]);
 
 	return (
@@ -77,8 +84,12 @@ export default function FontScroll() {
 		return () => mq.removeEventListener("change", update);
 	}, []);
 
+	// Auto-append only while under the cap and not reduced-motion; past that a
+	// "Load more" button takes over, bounding how many live instances accumulate.
+	const autoAppend = !reducedMotion && count < CAP;
+
 	useEffect(() => {
-		if (reducedMotion) return; // no auto-append under reduced motion
+		if (!autoAppend) return;
 		const node = sentinelRef.current;
 		if (!node) return;
 		const io = new IntersectionObserver(
@@ -96,7 +107,7 @@ export default function FontScroll() {
 		);
 		io.observe(node);
 		return () => io.disconnect();
-	}, [reducedMotion]);
+	}, [autoAppend]);
 
 	const rows = [];
 	for (let i = 0; i < count; i++) {
@@ -106,14 +117,14 @@ export default function FontScroll() {
 	return (
 		<>
 			<div className="rows">{rows}</div>
-			{reducedMotion ? (
-				<button type="button" className="load-more" onClick={() => setCount((c) => c + BATCH)}>
-					Load more fonts
-				</button>
-			) : (
+			{autoAppend ? (
 				<div ref={sentinelRef} className="sentinel" aria-hidden="true">
 					loading more fonts…
 				</div>
+			) : (
+				<button type="button" className="load-more" onClick={() => setCount((c) => c + BATCH)}>
+					Load more fonts
+				</button>
 			)}
 		</>
 	);
