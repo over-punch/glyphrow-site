@@ -3,6 +3,7 @@
 
 import Hero from "@/components/Hero";
 import FontScroll from "@/components/FontScroll";
+import CopyInstall from "@/components/CopyInstall";
 
 const REPO = "https://github.com/quitequinn/glyphrow";
 
@@ -27,24 +28,25 @@ export default function Home() {
 					axes, auto-fit sizing — drop it on any element and start testing type.
 				</p>
 
-				<ul className="features" aria-label="Features">
-					<li>Zero dependencies · ~5&nbsp;kB core</li>
-					<li>Composable OpenType features</li>
-					<li>Variable-font axis sliders</li>
-					<li>Auto-fit sizing via ResizeObserver</li>
-					<li>Accessible native controls</li>
-					<li>Vanilla or React</li>
-				</ul>
-
 				<div className="install">
-					<code>npm i glyphrow</code>
+					<CopyInstall command="npm install glyphrow" />
+					<nav className="install__links" aria-label="Project links">
+						<a href="https://www.npmjs.com/package/glyphrow">
+							npm <span aria-hidden="true">↗</span>
+						</a>
+						<a href={REPO}>
+							GitHub <span aria-hidden="true">↗</span>
+						</a>
+					</nav>
 				</div>
 
-				<nav className="links" aria-label="Project links">
-					<a href={REPO}>GitHub</a>
-					<a href="https://www.npmjs.com/package/glyphrow">npm</a>
-					<a href={`${REPO}#readme`}>Docs</a>
-				</nav>
+				<p className="stats">
+					<span>TypeScript</span>
+					<span>zero dependencies</span>
+					<span>vanilla or React</span>
+					<span>~5&nbsp;kB core</span>
+					<span>ISC</span>
+				</p>
 			</section>
 
 			<section className="showcase" aria-label="Live demo">
