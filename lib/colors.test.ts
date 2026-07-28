@@ -22,6 +22,15 @@ describe("rowColor", () => {
 		expect(bg).toMatch(/^hsl\([\d.]+ \d+% \d+%\)$/);
 	});
 
+	it("varies lightness between adjacent bands (colour-blind / greyscale safe)", () => {
+		// Hue is the axis red-green colour blindness collapses, so neighbours must
+		// also differ in lightness to stay distinguishable. Bands cycle 78/70/62%.
+		const light = (i: number) => Number(rowColor(i).bg.match(/ (\d+)%\)$/)![1]);
+		for (let i = 0; i < 50; i++) {
+			expect(Math.abs(light(i) - light(i + 1)), `bands ${i}/${i + 1}`).toBeGreaterThanOrEqual(6);
+		}
+	});
+
 	it("NEUTRAL is white on near-black for colour-font bands", () => {
 		expect(NEUTRAL).toEqual({ bg: "#0b0b0b", fg: "#ffffff" });
 	});

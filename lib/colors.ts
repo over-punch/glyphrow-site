@@ -8,13 +8,18 @@ const WARM_START = 342; // rose / watermelon
 const WARM_SPAN = 120; // ...through red, coral, tangerine, yellow to lime (~100°); no cool greens
 const GOLDEN_RATIO = 0.6180339887; // even, non-repeating spread across the arc
 const SAT = 90; // % — vivid, crayon-saturated
-const LIGHT = 70; // % — bright but still lets near-black text stay legible
+// Lightness cycles through three levels so adjacent bands differ in perceptual
+// lightness, not just hue — hue is the one axis red-green colour blindness
+// collapses, so a light/dark difference keeps neighbours distinguishable (and
+// in greyscale). All three keep the near-black text above WCAG AA.
+const LIGHTS = [78, 70, 62];
 
 /** Background + foreground for the row at `index`. */
 export function rowColor(index: number): { bg: string; fg: string } {
 	const t = (index * GOLDEN_RATIO) % 1;
 	const hue = (WARM_START + t * WARM_SPAN) % 360;
-	return { bg: `hsl(${hue.toFixed(1)} ${SAT}% ${LIGHT}%)`, fg: "#161616" };
+	const light = LIGHTS[index % LIGHTS.length];
+	return { bg: `hsl(${hue.toFixed(1)} ${SAT}% ${light}%)`, fg: "#161616" };
 }
 
 /** Neutral band for colour fonts, so the font's own colours carry the row. */

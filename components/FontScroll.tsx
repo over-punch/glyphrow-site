@@ -22,6 +22,9 @@ const CAP = 160;
 /** One font row: a coloured band with a centred, live Glyphrow tester. Most
  * rows use the cycled Google Font family; some presets pin a specific font
  * (colour fonts, feature demos). The family name is on the row's title. */
+/** How far outside the viewport a row keeps its live tester mounted. */
+const WINDOW_MARGIN = "1400px 0px";
+
 function FontRow({ family, index }: { family: string; index: number }) {
 	const preset = PRESETS[index % PRESETS.length];
 	// Rotate the preset's sample pool on each full loop through the presets.
@@ -31,11 +34,34 @@ function FontRow({ family, index }: { family: string; index: number }) {
 	const font = preset.font ?? family;
 	// Colour fonts paint themselves, so they sit on a neutral band.
 	const { bg, fg } = preset.colorFont ? NEUTRAL : rowColor(index);
-	// Inline band colour + the text colour the proof inherits (see globals.css).
-	// Setting `color` too means currentColor (which the proof's --glyphrow-accent
-	// resolves to) is the band ink, not the light body ink — so focus rings stay
-	// visible on bright bands, and any inherited-colour fallback text is legible.
-	const style = { background: bg, color: fg, "--glyphrow-fg": fg } as CSSProperties;
+
+	const ref = useRef<HTMLElement>(null);
+	// Windowing: mount the (heavy) Glyphrow tester only while the row is near the
+	// viewport. Far rows keep just their coloured band at its last measured
+	// height, so a long scroll doesn't accumulate unbounded live testers,
+	// ResizeObservers and document listeners. Starts mounted so SSR/first paint
+	// matches; the observer unmounts distant rows on the client.
+	const [mounted, setMounted] = useState(true);
+	const minHeightRef = useRef<number>();
+
+	useEffect(() => {
+		const el = ref.current;
+		if (!el) return;
+		const io = new IntersectionObserver(
+			([entry]) => {
+				// Capture the fitted height before unmounting so the band keeps the
+				// same size and the scroll position doesn't jump.
+				if (!entry.isIntersecting) {
+					const h = el.getBoundingClientRect().height;
+					if (h) minHeightRef.current = h;
+				}
+				setMounted(entry.isIntersecting);
+			},
+			{ rootMargin: WINDOW_MARGIN },
+		);
+		io.observe(el);
+		return () => io.disconnect();
+	}, []);
 
 	useEffect(() => {
 		loadGoogleFont(font, preset.load);
@@ -50,16 +76,30 @@ function FontRow({ family, index }: { family: string; index: number }) {
 		}
 	}, [font, preset.load, preset.italic, preset.colorFont]);
 
+	// Inline band colour + the text colour the proof inherits (see globals.css).
+	// Setting `color` too means currentColor (which the proof's --glyphrow-accent
+	// resolves to) is the band ink, not the light body ink — so focus rings stay
+	// visible on bright bands, and any inherited-colour fallback text is legible.
+	// While windowed out, pin the band to its captured height.
+	const style = {
+		background: bg,
+		color: fg,
+		"--glyphrow-fg": fg,
+		...(mounted ? {} : { minHeight: minHeightRef.current }),
+	} as CSSProperties;
+
 	return (
-		<article className="row" title={font} style={style}>
-			<Glyphrow
-				fontFamily={font}
-				fallback="sans-serif"
-				text={sample}
-				align="center"
-				className="row__proof"
-				{...preset.opts}
-			/>
+		<article ref={ref} className="row" title={font} style={style}>
+			{mounted && (
+				<Glyphrow
+					fontFamily={font}
+					fallback="sans-serif"
+					text={sample}
+					align="center"
+					className="row__proof"
+					{...preset.opts}
+				/>
+			)}
 		</article>
 	);
 }
