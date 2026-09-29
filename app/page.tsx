@@ -60,7 +60,7 @@ export default function Home() {
 
 			<footer className="foot">
 				<span>
-					Glyphrow — by <a href="https://liiift.studio/">Quinn Keaveney</a>
+					Glyphrow — by <a href="https://overpunch.ca/">Quinn Keaveney</a>
 				</span>
 				<a href={REPO}>Source on GitHub</a>
 			</footer>
